@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉语学习平台 - 新HSK3.0 第1-3课</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --bg: #faf9f4;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #297a2e;
+  --accent-soft: rgba(41, 122, 46, .14);
+  --accent2: #d97706;
+  --accent2-soft: rgba(217, 119, 6, .14);
+  --border: rgba(15, 23, 42, .08);
+}
+
+* {
+  font-family: 'Fredoka', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(800px 400px at 20% -10%, var(--accent-soft), transparent 70%), var(--bg);
+  color: var(--text);
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.header .eyebrow {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.header h1 span {
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.header p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* Lesson Navigation */
+.lesson-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.lesson-btn {
+  padding: 14px 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  transition: all .25s;
+  text-align: left;
+  width: 100%;
+}
+
+.lesson-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(41, 122, 46, .1);
+}
+
+.lesson-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.lesson-btn-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.lesson-num.l1 { background: var(--accent-soft); color: var(--accent); }
+.lesson-num.l2 { background: var(--accent2-soft); color: var(--accent2); }
+.lesson-num.l3 { background: rgba(13, 148, 136, .14); color: #0d9488; }
+
+.lesson-title { font-weight: 600; font-size: 1.05rem; }
+.lesson-subtitle { color: var(--muted); font-size: .85rem; margin-top: 2px; }
+
+/* Tab Navigation */
+.tab-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .25s;
+  font-weight: 500;
+  font-size: .95rem;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* Content Area */
+.content-area {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  min-height: 400px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.content-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.content-header .subtitle {
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.content-header .hint {
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+/* Vocab Cards */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card-flip {
+  perspective: 1000px;
+  height: 180px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform .6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card-flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-front {
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.card-back {
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent2-soft));
+  border: 1px solid var(--accent);
+  transform: rotateY(180deg);
+}
+
+.card-front .hanzi {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-back .hanzi {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.pinyin {
+  color: var(--accent);
+  font-size: .95rem;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.meaning {
+  color: var(--text);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.example {
+  color: var(--text);
+  font-size: .8rem;
+  margin-top: 8px;
+  font-style: italic;
+  text-align: center;
+  padding: 0 4px;
+  line-height: 1.4;
+}
+
+.flip-hint {
+  font-size: .7rem;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+/* Navigation dots */
+.nav-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.nav-dot.active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+/* Grammar */
+.objectives {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.tag-accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tag-warm {
+  background: var(--accent2-soft);
+  color: var(--accent2);
+}
+
+.grammar-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 16px 0;
+}
+
+.grammar-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.grammar-num {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+  line-height: 28px;
+  font-size: .85rem;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.grammar-content {
+  margin-left: 38px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.grammar-examples {
+  margin-left: 38px;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.grammar-examples .label {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.grammar-examples .ex {
+  line-height: 1.8;
+}
+
+/* Dialogue */
+.dialogue-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogue-line {
+  display: flex;
+}
+
+.dialogue-line.left { justify-content: flex-start; }
+.dialogue-line.right { justify-content: flex-end; }
+
+.dialogue-bubble {
+  max-width: 75%;
+  border-radius: 16px;
+  padding: 14px 18px;
+  border: 1px solid;
+}
+
+.dialogue-line.left .dialogue-bubble {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  border-bottom-left-radius: 4px;
+}
+
+.dialogue-line.right .dialogue-bubble {
+  background: var(--accent2-soft);
+  border-color: var(--accent2);
+  border-bottom-right-radius: 4px;
+}
+
+.dialogue-speaker {
+  font-size: .75rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.dialogue-line.left .dialogue-speaker { color: var(--accent); }
+.dialogue-line.right .dialogue-speaker { color: var(--accent2); }
+
+.dialogue-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.dialogue-en {
+  color: var(--muted);
+  font-size: .85rem;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Quiz */
+.quiz-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-display {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.progress-display {
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .4s;
+  border-radius: 3px;
+}
+
+.progress-message {
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.quiz-question {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.quiz-question-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.quiz-qnum {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+  line-height: 24px;
+  font-size: .8rem;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.quiz-option {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  transition: all .2s;
+  text-align: left;
+  width: 100%;
+  font-size: .95rem;
+}
+
+.quiz-option:hover:not(.disabled) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.quiz-option.correct {
+  background: rgba(13, 150, 105, .12);
+  border-color: #0d9669;
+  color: #065f46;
+}
+
+.quiz-option.wrong {
+  background: rgba(220, 38, 38, .1);
+  border-color: #dc2626;
+  color: #991b1b;
+}
+
+.quiz-option.disabled {
+  pointer-events: none;
+  opacity: .7;
+}
+
+.quiz-option .letter {
+  font-weight: 600;
+  margin-right: 8px;
+  color: var(--accent);
+}
+
+.reset-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all .2s;
+}
+
+.reset-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn .4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  padding: 20px;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  body { padding: 16px; }
+  .header h1 { font-size: 1.8rem; }
+  .content-area { padding: 18px; }
+  .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .card-flip { height: 160px; }
+  .card-front .hanzi { font-size: 1.8rem; }
+  .dialogue-bubble { max-width: 88%; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- Header -->
+  <div class="header">
+    <div class="eyebrow">New HSK 3.0 · Course 1</div>
+    <h1><span>汉语学习平台</span></h1>
+    <p>Chinese Learning Platform · Lessons 1-3</p>
+  </div>
+
+  <!-- Lesson Navigation -->
+  <div class="lesson-nav">
+    <button class="lesson-btn active" onclick="switchLesson(1)" id="lesson-btn-1">
+      <div class="lesson-btn-inner">
+        <div class="lesson-num l1">1</div>
+        <div>
+          <div class="lesson-title">AI小语，你好！</div>
+          <div class="lesson-subtitle">Hello, AI Xiaoyu! · Greetings</div>
+        </div>
+      </div>
+    </button>
+    <button class="lesson-btn" onclick="switchLesson(2)" id="lesson-btn-2">
+      <div class="lesson-btn-inner">
+        <div class="lesson-num l2">2</div>
+        <div>
+          <div class="lesson-title">我叫李文</div>
+          <div class="lesson-subtitle">My name is Li Wen · Self-intro</div>
+        </div>
+      </div>
+    </button>
+    <button class="lesson-btn" onclick="switchLesson(3)" id="lesson-btn-3">
+      <div class="lesson-btn-inner">
+        <div class="lesson-num l3">3</div>
+        <div>
+          <div class="lesson-title">我是中国人</div>
+          <div class="lesson-subtitle">I'm Chinese · Nationality</div>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('vocab')" id="tab-vocab">
+      <span style="margin-right:6px;">●</span>生词 Vocabulary
+    </button>
+    <button class="tab-btn" onclick="switchTab('grammar')" id="tab-grammar">
+      <span style="margin-right:6px;">●</span>语法 Grammar
+    </button>
+    <button class="tab-btn" onclick="switchTab('dialogue')" id="tab-dialogue">
+      <span style="margin-right:6px;">●</span>对话 Dialogue
+    </button>
+    <button class="tab-btn" onclick="switchTab('quiz')" id="tab-quiz">
+      <span style="margin-right:6px;">●</span>练习 Quiz
+    </button>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area" id="content-area">
+    <!-- Content will be injected here -->
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    新HSK教程1 · 第1-3课 | New HSK Course 1 · Lessons 1-3
+  </div>
+
+</div>
+
+<script>
+(function() {
+
+// ==================== DATA ====================
+const lessons = {
+  1: {
+    title: "AI小语，你好！",
+    subtitle: "Hello, AI Xiaoyu!",
+    objectives: ["打招呼、致谢、告别 Greetings, thanks, and farewells", "中文交际礼仪；\"您\" Chinese etiquette; \"您\""],
+    vocab: [
+      {hanzi:"你好", pinyin:"nǐ hǎo", meaning:"hello", example:"你好，王老师！ Hello, Teacher Wang!"},
+      {hanzi:"王老师", pinyin:"Wáng lǎoshī", meaning:"Teacher Wang", example:"你好，王老师！ Hello, Teacher Wang!"},
+      {hanzi:"大家", pinyin:"dàjiā", meaning:"everybody", example:"大家好！ Hello, everyone!"},
+      {hanzi:"好", pinyin:"hǎo", meaning:"good; fine", example:"他学习很好。 He studies very well."},
+      {hanzi:"学生", pinyin:"xuéshēng", meaning:"student", example:"他是李老师的学生。 He is Teacher Li's student."},
+      {hanzi:"们", pinyin:"men", meaning:"plural suffix", example:"你们 我们 他们 you; we; they"},
+      {hanzi:"老师", pinyin:"lǎoshī", meaning:"teacher", example:"她是我的中文老师。 She is my Chinese teacher."},
+      {hanzi:"您", pinyin:"nín", meaning:"you (polite)", example:"老师，您好！ Hello, Teacher!"},
+      {hanzi:"你们", pinyin:"nǐmen", meaning:"you (plural)", example:"谢谢你们。 Thank you all."},
+      {hanzi:"谢谢", pinyin:"xièxie", meaning:"thank you", example:"谢谢你！ Thank you!"},
+      {hanzi:"不客气", pinyin:"bú kèqi", meaning:"you're welcome", example:"A：谢谢！B：不客气！"},
+      {hanzi:"同学", pinyin:"tóngxué", meaning:"classmate", example:"同学们好！ Hello, classmates!"},
+      {hanzi:"再见", pinyin:"zàijiàn", meaning:"goodbye", example:"再见，明天见！ Goodbye, see you tomorrow!"}
+    ],
+    grammar: [
+      {
+        title: "打招呼 Greetings",
+        content: "\"你好\"是最常用的打招呼用语。对长辈或需要表示尊敬的人用\"您好\"。",
+        examples: ["你好！(Hello!)", "您好！(Hello! - polite)", "大家好！(Hello, everyone!)"]
+      },
+      {
+        title: "致谢与回应 Thanks & Response",
+        content: "用\"谢谢\"表示感谢，回应可以说\"不客气\"。",
+        examples: ["A: 谢谢！(Thank you!)", "B: 不客气！(You're welcome!)"]
+      },
+      {
+        title: "告别 Farewells",
+        content: "\"再见\"是最常用的告别用语，意思是\"再次相见\"。",
+        examples: ["再见！(Goodbye!)", "明天见！(See you tomorrow!)"]
+      }
+    ],
+    dialogue: [
+      {speaker:"王一飞", text:"AI小语，你好！", pinyin:"AI Xiǎoyǔ, nǐ hǎo!", en:"Hello, AI Xiaoyu!"},
+      {speaker:"小语", text:"你好，王一飞！", pinyin:"Nǐ hǎo, Wáng Yīfēi!", en:"Hello, Wang Yifei!"},
+      {speaker:"王一飞", text:"谢谢！", pinyin:"Xièxie!", en:"Thank you!"},
+      {speaker:"小语", text:"不客气。", pinyin:"Bú kèqi.", en:"You're welcome."},
+      {speaker:"王一飞", text:"再见！", pinyin:"Zàijiàn!", en:"Goodbye!"},
+      {speaker:"小语", text:"再见！", pinyin:"Zàijiàn!", en:"Goodbye!"}
+    ],
+    quiz: [
+      {q:"\"你好\"的意思是什么？ What does \"nǐ hǎo\" mean?", options:["Goodbye","Hello","Thank you","Sorry"], answer:1},
+      {q:"对老师应该怎么说？ What should you say to a teacher?", options:["你好","您好","再见","谢谢"], answer:1},
+      {q:"\"谢谢\"的回应是什么？ How to respond to \"xièxie\"?", options:["你好","再见","不客气","对不起"], answer:2},
+      {q:"\"学生\"的拼音是？ What is the pinyin of \"学生\"?", options:["xuéshēng","lǎoshī","tóngxué","dàjiā"], answer:0},
+      {q:"\"Goodbye\" 用中文怎么说？ How to say \"Goodbye\" in Chinese?", options:["你好","谢谢","再见","不客气"], answer:2}
+    ]
+  },
+  2: {
+    title: "我叫李文",
+    subtitle: "My name is Li Wen",
+    objectives: ["自我介绍 Self-introductions", "致歉语 Expressions of apology", "汉语的基本语序 Basic word order in Chinese", "中文姓名构成 Structure of Chinese names"],
+    vocab: [
+      {hanzi:"请问", pinyin:"qǐngwèn", meaning:"excuse me; may I ask", example:"请问，您是王老师吗？ Excuse me, are you Teacher Wang?"},
+      {hanzi:"你", pinyin:"nǐ", meaning:"you (singular)", example:"你好！ Hello!"},
+      {hanzi:"叫", pinyin:"jiào", meaning:"be called", example:"我的猫叫Coco。 My cat is called Coco."},
+      {hanzi:"什么", pinyin:"shénme", meaning:"what", example:"这是什么？ What is this?"},
+      {hanzi:"名字", pinyin:"míngzi", meaning:"name", example:"你的名字很好。 Your name is very nice."},
+      {hanzi:"我", pinyin:"wǒ", meaning:"I; me", example:"我是学生。 I am a student."},
+      {hanzi:"不", pinyin:"bù", meaning:"not; no", example:"我不是白家月。 I am not Bai Jiayue."},
+      {hanzi:"是", pinyin:"shì", meaning:"to be", example:"我是学生。 I am a student."},
+      {hanzi:"对不起", pinyin:"duìbuqǐ", meaning:"sorry", example:"对不起！ I'm sorry!"},
+      {hanzi:"没关系", pinyin:"méi guānxi", meaning:"that's all right", example:"没关系！ That's all right!"},
+      {hanzi:"没事", pinyin:"méishì", meaning:"it doesn't matter", example:"没事！ It's nothing!"},
+      {hanzi:"很", pinyin:"hěn", meaning:"very", example:"我很好。 I am very well."},
+      {hanzi:"高兴", pinyin:"gāoxìng", meaning:"glad; happy", example:"很高兴认识你。 Nice to meet you."},
+      {hanzi:"认识", pinyin:"rènshi", meaning:"know; meet", example:"你认识他吗？ Do you know him?"},
+      {hanzi:"也", pinyin:"yě", meaning:"also; too", example:"我也很高兴。 I am also very happy."}
+    ],
+    grammar: [
+      {
+        title: "汉语的基本语序 Basic Word Order",
+        content: "汉语的基本语序是：主语 + 谓语 + 宾语。Chinese basic word order: Subject + Predicate + Object.",
+        examples: ["我(主语) + 叫(谓语) + 李文(宾语)。", "I (S) + am called (V) + Li Wen (O)."]
+      },
+      {
+        title: "询问姓名 Asking Names",
+        content: "用\"请问，你叫什么名字？\"来礼貌地询问对方姓名。",
+        examples: ["A: 请问，你叫什么名字？", "B: 我叫李文。"]
+      },
+      {
+        title: "致歉与回应 Apology & Response",
+        content: "做错事时说\"对不起\"，对方可以回应\"没关系\"或\"没事\"。",
+        examples: ["A: 对不起！(Sorry!)", "B: 没关系。(It's all right.)"]
+      }
+    ],
+    dialogue: [
+      {speaker:"王一飞", text:"请问，你叫什么名字？", pinyin:"Qǐngwèn, nǐ jiào shénme míngzi?", en:"Excuse me, what's your name?"},
+      {speaker:"学生", text:"我叫李文。", pinyin:"Wǒ jiào Lǐ Wén.", en:"My name is Li Wen."},
+      {speaker:"陈天中", text:"你好，白家月！", pinyin:"Nǐ hǎo, Bái Jiāyuè!", en:"Hello, Bai Jiayue!"},
+      {speaker:"白家月", text:"对不起，我不是白家月。", pinyin:"Duìbuqǐ, wǒ bú shì Bái Jiāyuè.", en:"Sorry, I'm not Bai Jiayue."},
+      {speaker:"陈天中", text:"没关系！", pinyin:"Méi guānxi!", en:"That's all right!"},
+      {speaker:"李文", text:"很高兴认识你！", pinyin:"Hěn gāoxìng rènshi nǐ!", en:"Nice to meet you!"},
+      {speaker:"白家月", text:"我也很高兴认识你！", pinyin:"Wǒ yě hěn gāoxìng rènshi nǐ!", en:"Nice to meet you too!"}
+    ],
+    quiz: [
+      {q:"\"我叫李文\"的意思是？ What does \"Wǒ jiào Lǐ Wén\" mean?", options:["I am a student","My name is Li Wen","I am Chinese","I like Li Wen"], answer:1},
+      {q:"\"对不起\"的意思是？ What does \"duìbuqǐ\" mean?", options:["Thank you","Hello","Sorry","Goodbye"], answer:2},
+      {q:"汉语的基本语序是？ What is the basic Chinese word order?", options:["S-O-V","S-V-O","V-S-O","O-V-S"], answer:1},
+      {q:"\"也\"的意思是？ What does \"yě\" mean?", options:["very","not","also","what"], answer:2},
+      {q:"\"很高兴认识你\"用在什么时候？ When do you use \"hěn gāoxìng rènshi nǐ\"?", options:["When saying goodbye","When first meeting someone","When apologizing","When thanking someone"], answer:1}
+    ]
+  },
+  3: {
+    title: "我是中国人",
+    subtitle: "I'm Chinese",
+    objectives: ["\"是\"字句 The \"是\" sentence", "结构助词\"的\" The structural particle \"的\"", "用\"吗\"的是非问句 Yes-no questions with \"吗\""],
+    vocab: [
+      {hanzi:"人", pinyin:"rén", meaning:"human; person", example:"他是一个好人。 He is a good person."},
+      {hanzi:"的", pinyin:"de", meaning:"structural particle", example:"你的名字很好。 Your name is very nice."},
+      {hanzi:"中国", pinyin:"Zhōngguó", meaning:"China", example:"我是中国人。 I am Chinese."},
+      {hanzi:"法国", pinyin:"Fǎguó", meaning:"France", example:"我认识一个法国人。 I know a French person."},
+      {hanzi:"中文", pinyin:"Zhōngwén", meaning:"Chinese language", example:"他中文很好。 His Chinese is very good."},
+      {hanzi:"她", pinyin:"tā", meaning:"she; her", example:"她是英国人。 She is British."},
+      {hanzi:"这", pinyin:"zhè", meaning:"this", example:"这是谁？ Who is this?"},
+      {hanzi:"谁", pinyin:"shéi", meaning:"who", example:"谁认识法国人？ Who knows a French person?"},
+      {hanzi:"女朋友", pinyin:"nǚpéngyou", meaning:"girlfriend", example:"他的女朋友很漂亮。 His girlfriend is very pretty."},
+      {hanzi:"哪", pinyin:"nǎ", meaning:"which", example:"他是哪国人？ Which country is he from?"},
+      {hanzi:"国", pinyin:"guó", meaning:"country", example:"你是哪国人？ Which country are you from?"},
+      {hanzi:"泰国", pinyin:"Tàiguó", meaning:"Thailand", example:"我想去泰国。 I want to go to Thailand."},
+      {hanzi:"喂", pinyin:"wèi", meaning:"hello (on phone)", example:"喂，请问是王老师吗？ Hello, is this Teacher Wang?"},
+      {hanzi:"姐姐", pinyin:"jiějie", meaning:"elder sister", example:"她姐姐是我同学。 Her elder sister is my classmate."},
+      {hanzi:"工作", pinyin:"gōngzuò", meaning:"job; work", example:"她的工作很好。 Her job is very good."},
+      {hanzi:"还", pinyin:"hái", meaning:"still", example:"你还忙吗？ Are you still busy?"},
+      {hanzi:"忙", pinyin:"máng", meaning:"busy", example:"他的工作很忙。 His work is very busy."},
+      {hanzi:"吗", pinyin:"ma", meaning:"question particle", example:"你有工作吗？ Do you have a job?"},
+      {hanzi:"对", pinyin:"duì", meaning:"right; correct", example:"对，他是中国人。 Yes, he is Chinese."},
+      {hanzi:"太", pinyin:"tài", meaning:"too; very", example:"太好了！ Great!"},
+      {hanzi:"我们", pinyin:"wǒmen", meaning:"we; us", example:"我们是同学。 We are classmates."},
+      {hanzi:"想", pinyin:"xiǎng", meaning:"miss; think", example:"我想你了。 I miss you."}
+    ],
+    grammar: [
+      {
+        title: "\"是\"字句 The \"是\" Sentence",
+        content: "表示人或事物等同什么或类属什么，否定形式是\"不是\"。Indicates identity or category. Negative: \"不是\".",
+        examples: ["我是法国人。(I am French.)", "她是中文老师。(She is a Chinese teacher.)", "我老师不是法国人。(My teacher is not French.)"]
+      },
+      {
+        title: "结构助词\"的\" Structural Particle \"的\"",
+        content: "定语 + 的 + 中心语，表示领属关系。Attributive + 的 + Noun, expresses possession.",
+        examples: ["白家月的中文老师 (Bai Jiayue's Chinese teacher)", "你的名字 (your name)"]
+      },
+      {
+        title: "用\"吗\"的是非问句 Yes-No Questions with \"吗\"",
+        content: "\"吗\"放在句子末尾，表示疑问。Place \"吗\" at the end of a statement to make a yes-no question.",
+        examples: ["你也很忙吗？(Are you also busy?)", "你是他的中文老师吗？(Are you his Chinese teacher?)"]
+      }
+    ],
+    dialogue: [
+      {speaker:"李文", text:"你是哪国人？", pinyin:"Nǐ shì nǎ guó rén?", en:"Which country are you from?"},
+      {speaker:"白家月", text:"我是中国人。", pinyin:"Wǒ shì Zhōngguó rén.", en:"I'm Chinese."},
+      {speaker:"李文", text:"她是你的女朋友吗？", pinyin:"Tā shì nǐ de nǚpéngyou ma?", en:"Is she your girlfriend?"},
+      {speaker:"陈天中", text:"对，她是泰国人。", pinyin:"Duì, tā shì Tàiguó rén.", en:"Yes, she is Thai."},
+      {speaker:"王一雪", text:"喂，哥！", pinyin:"Wèi, gē!", en:"Hello, brother!"},
+      {speaker:"王一飞", text:"姐，你还忙吗？", pinyin:"Jiě, nǐ hái máng ma?", en:"Sis, are you still busy?"},
+      {speaker:"王一雪", text:"不忙。我们想你了！", pinyin:"Bù máng. Wǒmen xiǎng nǐ le!", en:"Not busy. We miss you!"}
+    ],
+    quiz: [
+      {q:"\"我是中国人\"的意思是？ What does \"Wǒ shì Zhōngguó rén\" mean?", options:["I study Chinese","I am Chinese","I like China","I live in China"], answer:1},
+      {q:"\"是\"的否定形式是？ What is the negative of \"是\"?", options:["不 is","不是","没是","无是"], answer:1},
+      {q:"\"吗\"用在什么地方？ Where is \"吗\" used?", options:["At the beginning of a sentence","In the middle of a sentence","At the end of a question","Before a verb"], answer:2},
+      {q:"\"的\"表示什么？ What does \"的\" indicate?", options:["Past tense","Possession/attribution","Future tense","Plural"], answer:1},
+      {q:"\"她\"指的是？ What does \"tā (she)\" refer to?", options:["A male","A female","A thing","An animal"], answer:1},
+      {q:"\"Thailand\" 用中文怎么说？ How to say \"Thailand\" in Chinese?", options:["中国","法国","泰国","美国"], answer:2}
+    ]
+  }
+};
+
+// ==================== STATE ====================
+let currentLesson = 1;
+let currentTab = 'vocab';
+let currentVocabPage = 0;
+let quizScore = 0;
+let quizAnswered = [];
+
+// ==================== RENDER FUNCTIONS ====================
+function switchLesson(num) {
+  currentLesson = num;
+  currentVocabPage = 0;
+  quizScore = 0;
+  quizAnswered = [];
+  
+  document.querySelectorAll('.lesson-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i + 1 === num);
+  });
+  
+  renderContent();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  quizScore = 0;
+  quizAnswered = [];
+  
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.getElementById('tab-' + tab).classList.add('active');
+  
+  renderContent();
+}
+
+function renderContent() {
+  const area = document.getElementById('content-area');
+  area.classList.remove('fade-in');
+  void area.offsetWidth;
+  area.classList.add('fade-in');
+  
+  switch(currentTab) {
+    case 'vocab': renderVocab(area); break;
+    case 'grammar': renderGrammar(area); break;
+    case 'dialogue': renderDialogue(area); break;
+    case 'quiz': renderQuiz(area); break;
+  }
+}
+
+function renderVocab(area) {
+  const lesson = lessons[currentLesson];
+  const vocab = lesson.vocab;
+  const perPage = 6;
+  const totalPages = Math.ceil(vocab.length / perPage);
+  const start = currentVocabPage * perPage;
+  const items = vocab.slice(start, start + perPage);
+  
+  let html = `
+    <div class="content-header">
+      <div>
+        <h2>${lesson.title}</h2>
+        <div class="subtitle">${lesson.subtitle} · 生词 New Words</div>
+      </div>
+      <div class="hint">点击卡片翻转查看释义 · Click cards to flip</div>
+    </div>
+    <div class="vocab-grid">
+  `;
+  
+  items.forEach((item, idx) => {
+    html += `
+      <div class="card-flip" onclick="this.classList.toggle('card-flipped')">
+        <div class="card-inner">
+          <div class="card-front">
+            <div class="hanzi">${item.hanzi}</div>
+            <div class="pinyin">${item.pinyin}</div>
+            <div class="flip-hint">点击翻转 Click to flip</div>
+          </div>
+          <div class="card-back">
+            <div class="hanzi">${item.hanzi}</div>
+            <div class="pinyin">${item.pinyin}</div>
+            <div class="meaning">${item.meaning}</div>
+            <div class="example">${item.example}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += `</div>`;
+  
+  if (totalPages > 1) {
+    html += `<div class="nav-dots">`;
+    for (let i = 0; i < totalPages; i++) {
+      html += `<div class="nav-dot ${i === currentVocabPage ? 'active' : ''}" onclick="goVocabPage(${i})"></div>`;
+    }
+    html += `</div>`;
+  }
+  
+  area.innerHTML = html;
+}
+
+function goVocabPage(p) {
+  currentVocabPage = p;
+  renderContent();
+}
+
+function renderGrammar(area) {
+  const lesson = lessons[currentLesson];
+  
+  let html = `
+    <div class="content-header">
+      <div>
+        <h2>${lesson.title}</h2>
+        <div class="subtitle">${lesson.subtitle} · 语法 Grammar Points</div>
+      </div>
+    </div>
+    <div class="objectives">
+      <span class="tag tag-accent">学习目标 Learning Objectives:</span>
+  `;
+  lesson.objectives.forEach(obj => {
+    html += `<span class="tag tag-warm">${obj}</span>`;
+  });
+  html += `</div>`;
+  
+  lesson.grammar.forEach((g, idx) => {
+    html += `
+      <div class="grammar-box">
+        <div class="grammar-title">
+          <span class="grammar-num">${idx + 1}</span>
+          ${g.title}
+        </div>
+        <div class="grammar-content">${g.content}</div>
+        <div class="grammar-examples">
+          <div class="label">例句 Examples:</div>
+          ${g.examples.map(e => `<div class="ex">${e}</div>`).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  area.innerHTML = html;
+}
+
+function renderDialogue(area) {
+  const lesson = lessons[currentLesson];
+  
+  let html = `
+    <div class="content-header">
+      <div>
+        <h2>${lesson.title}</h2>
+        <div class="subtitle">${lesson.subtitle} · 情景对话 Dialogue</div>
+      </div>
+    </div>
+    <div class="dialogue-container">
+  `;
+  
+  lesson.dialogue.forEach((line, idx) => {
+    const isLeft = idx % 2 === 0;
+    html += `
+      <div class="dialogue-line ${isLeft ? 'left' : 'right'}">
+        <div class="dialogue-bubble">
+          <div class="dialogue-speaker">${line.speaker}</div>
+          <div class="dialogue-text">${line.text}</div>
+          <div class="pinyin">${line.pinyin}</div>
+          <div class="dialogue-en">${line.en}</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += `</div>`;
+  area.innerHTML = html;
+}
+
+function renderQuiz(area) {
+  const lesson = lessons[currentLesson];
+  const quiz = lesson.quiz;
+  
+  if (quizAnswered.length === 0) {
+    quizAnswered = new Array(quiz.length).fill(null);
+  }
+  
+  const allAnswered = quizAnswered.every(a => a !== null);
+  
+  let html = `
+    <div class="content-header">
+      <div>
+        <h2>${lesson.title}</h2>
+        <div class="subtitle">${lesson.subtitle} · 小测验 Quiz</div>
+      </div>
+      <div class="quiz-header-right">
+        ${allAnswered 
+          ? `<div class="score-display">得分 Score: ${quizScore}/${quiz.length}</div>` 
+          : `<div class="progress-display">已答 ${quizAnswered.filter(a=>a!==null).length}/${quiz.length}</div>`
+        }
+      </div>
+    </div>
+  `;
+  
+  if (allAnswered) {
+    const pct = Math.round(quizScore / quiz.length * 100);
+    let msg = '';
+    if (pct >= 80) msg = '太棒了！Excellent work!';
+    else if (pct >= 60) msg = '不错！继续加油！Good job! Keep practicing!';
+    else msg = '再试一次！Try again!';
+    
+    html += `
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-message">${msg}</div>
+    `;
+  }
+  
+  quiz.forEach((q, qIdx) => {
+    const answered = quizAnswered[qIdx];
+    html += `
+      <div class="quiz-question">
+        <div class="quiz-question-title">
+          <span class="quiz-qnum">${qIdx + 1}</span>
+          <span>${q.q}</span>
+        </div>
+        <div class="quiz-options">
+    `;
+    
+    q.options.forEach((opt, oIdx) => {
+      let cls = 'quiz-option';
+      if (answered !== null) {
+        cls += ' disabled';
+        if (oIdx === q.answer) cls += ' correct';
+        else if (oIdx === answered && answered !== q.answer) cls += ' wrong';
+      }
+      const letter = String.fromCharCode(65 + oIdx);
+      html += `<button class="${cls}" onclick="answerQuiz(${qIdx}, ${oIdx})"><span class="letter">${letter}.</span>${opt}</button>`;
+    });
+    
+    html += `</div></div>`;
+  });
+  
+  if (allAnswered) {
+    html += `<button class="reset-btn" onclick="resetQuiz()">重新练习 Try Again</button>`;
+  }
+  
+  area.innerHTML = html;
+}
+
+function answerQuiz(qIdx, oIdx) {
+  if (quizAnswered[qIdx] !== null) return;
+  quizAnswered[qIdx] = oIdx;
+  if (oIdx === lessons[currentLesson].quiz[qIdx].answer) {
+    quizScore++;
+  }
+  renderContent();
+}
+
+function resetQuiz() {
+  quizScore = 0;
+  quizAnswered = [];
+  renderContent();
+}
+
+// Initial render
+renderContent();
+
+})();
+</script>
+
+</body>
+</html>
